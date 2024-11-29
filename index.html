@@ -143,7 +143,7 @@
         <input type="password" id="login-password" placeholder="Password" required>
         <button type="submit">Login</button>
       </form>
-      <p>Don't have an account? <a href="javascript:void(0)" onclick="showRegister()">Register here</a></p>
+      <p>Don't have an account? <a href="register/register.html">Register here</a></p>
     </div>
 
     <!-- Register Section -->
@@ -155,9 +155,9 @@
         <input type="password" id="register-password" placeholder="Password" required>
         <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
         <button type="submit">Register</button>
-        <a href="register.html">Register</a>
       </form>
       <p>Already have an account? <a href="javascript:void(0)" onclick="showLogin()">Login here</a></p>
+      <p id="error-message" style="color: red; text-align: center;"></p>
     </div>
 
     <!-- Home Section (Dashboard) -->
@@ -238,17 +238,24 @@
       const confirmPassword = document.getElementById('register-confirm-password').value;
 
       // Basic validation
-      if (password === confirmPassword) {
-        localStorage.setItem('username', name);  // Save username
-        alert("Registration successful!");
-        showHome();  // Redirect to home page after successful registration
-      } else {
-        alert("Passwords do not match.");
+      if (password !== confirmPassword) {
+        document.getElementById('error-message').textContent = "Passwords do not match!";
+        return;
       }
+
+      if (password.length < 6) {
+        document.getElementById('error-message').textContent = "Password must be at least 6 characters!";
+        return;
+      }
+
+      // If validation passes, store user data and show home page
+      localStorage.setItem('username', name);  // Save username
+      alert("Registration successful!");
+      showHome();  // Redirect to home page after successful registration
     });
 
     // Simulate a list of chats (For demonstration)
     const chats = [
       { name: "Alice", message: "Hey, how are you?" },
       { name: "Bob", message: "Let's meet up soon!" },
-      { name: "Charlie", message: "Do you want to join the
+      { name: "Charlie", message: "Do you want
