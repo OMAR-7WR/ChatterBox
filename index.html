@@ -3,26 +3,251 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChatterBox - Home</title>
+  <title>ChatterBox</title>
   <!-- CSS ফাইলের লিংক -->
-  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Global styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Login & Register Form Styles */
+    .form-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      color: #4caf50;
+      text-align: center;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .form-container p {
+      text-align: center;
+    }
+
+    .form-container a {
+      color: #4caf50;
+      text-decoration: none;
+    }
+
+    .form-container a:hover {
+      text-decoration: underline;
+    }
+
+    /* Home Page / Dashboard Styles */
+    .dashboard {
+      display: flex;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar {
+      width: 200px;
+      padding: 20px;
+      background-color: #f4f4f4;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 8px;
+      color: #333;
+      text-decoration: none;
+      margin: 5px 0;
+    }
+
+    .sidebar a:hover {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .main-content {
+      flex-grow: 1;
+    }
+
+    .chat-box {
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .chat-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .chat-box ul li {
+      background-color: #e0f7fa;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    /* Hide sections */
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <div class="main-container">
-    <div class="logo-container">
-      <img src="assets/logo.png" alt="ChatterBox Logo" class="logo">
+
+  <div class="container">
+    <!-- Login Section -->
+    <div id="login-section" class="form-container">
+      <h2>Login</h2>
+      <form id="login-form">
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="javascript:void(0)" onclick="showRegister()">Register here</a></p>
     </div>
-    <h1>Welcome to ChatterBox</h1>
-    <p>Your go-to app for chatting and connecting with friends.</p>
-    
-    <!-- Button to go to Login page -->
-    <div class="button-container">
-      <a href="login.html" class="btn">Login</a>
-      <a href="register.html" class="btn">Sign Up</a>
+
+    <!-- Register Section -->
+    <div id="register-section" class="form-container hidden">
+      <h2>Create Your Account</h2>
+      <form id="register-form">
+        <input type="text" id="register-name" placeholder="Full Name" required>
+        <input type="email" id="register-email" placeholder="Email" required>
+        <input type="password" id="register-password" placeholder="Password" required>
+        <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
+        <button type="submit">Register</button>
+      </form>
+      <p>Already have an account? <a href="javascript:void(0)" onclick="showLogin()">Login here</a></p>
+    </div>
+
+    <!-- Home Section (Dashboard) -->
+    <div id="home-section" class="hidden">
+      <div class="dashboard">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <p>Welcome, <span id="user-name">User</span></p>
+          <a href="javascript:void(0)" onclick="showProfile()">My Profile</a>
+          <a href="javascript:void(0)" onclick="showFriends()">Friends</a>
+          <a href="javascript:void(0)" onclick="showMessages()">Messages</a>
+          <a href="javascript:void(0)" onclick="showSettings()">Settings</a>
+          <button onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+          <h2>Welcome to your Dashboard!</h2>
+          <div class="chat-box">
+            <h3>Your Chats</h3>
+            <ul id="chat-list">
+              <!-- Chat List -->
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- JavaScript ফাইলের লিংক -->
-  <script src="js/script.js"></script>
-</body>
-</html>
+  <script>
+    // Switch between login and register forms
+    function showRegister() {
+      document.getElementById('login-section').classList.add('hidden');
+      document.getElementById('register-section').classList.remove('hidden');
+    }
+
+    function showLogin() {
+      document.getElementById('register-section').classList.add('hidden');
+      document.getElementById('login-section').classList.remove('hidden');
+    }
+
+    // Show Home page after successful login
+    function showHome() {
+      document.getElementById('login-section').classList.add('hidden');
+      document.getElementById('register-section').classList.add('hidden');
+      document.getElementById('home-section').classList.remove('hidden');
+      document.getElementById('user-name').textContent = localStorage.getItem('username') || 'User';
+    }
+
+    // Logout function
+    function logout() {
+      alert("You have logged out successfully!");
+      localStorage.removeItem('username');  // Clear stored user data
+      showLogin();  // Show login page again
+    }
+
+    // Handle Login form submission
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      // Dummy login validation (Replace with server-side validation)
+      if (email === "user@example.com" && password === "password") {
+        localStorage.setItem('username', 'John Doe');  // Store user data
+        showHome();  // Show home page
+      } else {
+        alert("Invalid credentials.");
+      }
+    });
+
+    // Handle Register form submission
+    document.getElementById('register-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const name = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const confirmPassword = document.getElementById('register-confirm-password').value;
+
+      // Basic validation
+      if (password === confirmPassword) {
+        localStorage.setItem('username', name);  // Save username
+        alert("Registration successful!");
+        showHome();  // Redirect to home page after successful registration
+      } else {
+        alert("Passwords do not match.");
+      }
+    });
+
+    // Simulate a list of chats (For demonstration)
+    const chats = [
+      { name: "Alice", message: "Hey, how are you?" },
+      { name: "Bob", message: "Let's meet up soon!" },
+      { name: "Charlie", message: "Do you want to join the
